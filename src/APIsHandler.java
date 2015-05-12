@@ -1,4 +1,6 @@
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.thrift.TException;
 import thriftDemo.*;
 
@@ -13,20 +15,38 @@ import thriftDemo.*;
  * @author sonle
  */
 public class APIsHandler implements APIs.Iface {
-
+    ServerManager serverManager = new ServerManager(0, new HashMap<String, Integer>());
+    
     @Override
     public void put(String _username, int _newValue) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();
+        userAccessCounter.put(_username, +_newValue);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void increase(String _username) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        serverManager.setTotalAccessCounter(serverManager.getTotalAccessCounter() + 1);
+        Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();
+        if (userAccessCounter.containsKey(_username)){
+            int currentCounter = userAccessCounter.get(_username);
+            userAccessCounter.put(_username, ++currentCounter);
+        }
+        else {
+            userAccessCounter.put(_username, 1);
+        }
+        
+        System.out.println("===================");
+        System.out.println("username: " + _username);
+        System.out.println("counter: " + userAccessCounter.get(_username));
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int get(String _username) throws TException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();
+        return userAccessCounter.get(_username);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
