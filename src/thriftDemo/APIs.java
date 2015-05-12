@@ -39,7 +39,7 @@ public class APIs {
 
   public interface Iface {
 
-    public void put() throws org.apache.thrift.TException;
+    public void put(String _username, int _newValue) throws org.apache.thrift.TException;
 
     public void increase(String _username) throws org.apache.thrift.TException;
 
@@ -49,7 +49,7 @@ public class APIs {
 
   public interface AsyncIface {
 
-    public void put(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void put(String _username, int _newValue, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void increase(String _username, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -77,15 +77,17 @@ public class APIs {
       super(iprot, oprot);
     }
 
-    public void put() throws org.apache.thrift.TException
+    public void put(String _username, int _newValue) throws org.apache.thrift.TException
     {
-      send_put();
+      send_put(_username, _newValue);
       recv_put();
     }
 
-    public void send_put() throws org.apache.thrift.TException
+    public void send_put(String _username, int _newValue) throws org.apache.thrift.TException
     {
       put_args args = new put_args();
+      args.set_username(_username);
+      args.set_newValue(_newValue);
       sendBase("put", args);
     }
 
@@ -157,21 +159,27 @@ public class APIs {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void put(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void put(String _username, int _newValue, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      put_call method_call = new put_call(resultHandler, this, ___protocolFactory, ___transport);
+      put_call method_call = new put_call(_username, _newValue, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class put_call extends org.apache.thrift.async.TAsyncMethodCall {
-      public put_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String _username;
+      private int _newValue;
+      public put_call(String _username, int _newValue, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
+        this._username = _username;
+        this._newValue = _newValue;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("put", org.apache.thrift.protocol.TMessageType.CALL, 0));
         put_args args = new put_args();
+        args.set_username(_username);
+        args.set_newValue(_newValue);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -284,7 +292,7 @@ public class APIs {
 
       public put_result getResult(I iface, put_args args) throws org.apache.thrift.TException {
         put_result result = new put_result();
-        iface.put();
+        iface.put(args._username, args._newValue);
         return result;
       }
     }
@@ -395,7 +403,7 @@ public class APIs {
       }
 
       public void start(I iface, put_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.put(resultHandler);
+        iface.put(args._username, args._newValue,resultHandler);
       }
     }
 
@@ -506,6 +514,8 @@ public class APIs {
   public static class put_args implements org.apache.thrift.TBase<put_args, put_args._Fields>, java.io.Serializable, Cloneable, Comparable<put_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("put_args");
 
+    private static final org.apache.thrift.protocol.TField _USERNAME_FIELD_DESC = new org.apache.thrift.protocol.TField("_username", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField _NEW_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("_newValue", org.apache.thrift.protocol.TType.I32, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -513,10 +523,13 @@ public class APIs {
       schemes.put(TupleScheme.class, new put_argsTupleSchemeFactory());
     }
 
+    public String _username; // required
+    public int _newValue; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      _USERNAME((short)1, "_username"),
+      _NEW_VALUE((short)2, "_newValue");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -531,6 +544,10 @@ public class APIs {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
+          case 1: // _USERNAME
+            return _USERNAME;
+          case 2: // _NEW_VALUE
+            return _NEW_VALUE;
           default:
             return null;
         }
@@ -569,9 +586,17 @@ public class APIs {
         return _fieldName;
       }
     }
+
+    // isset id assignments
+    private static final int ___NEWVALUE_ISSET_ID = 0;
+    private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields._USERNAME, new org.apache.thrift.meta_data.FieldMetaData("_username", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields._NEW_VALUE, new org.apache.thrift.meta_data.FieldMetaData("_newValue", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(put_args.class, metaDataMap);
     }
@@ -579,10 +604,25 @@ public class APIs {
     public put_args() {
     }
 
+    public put_args(
+      String _username,
+      int _newValue)
+    {
+      this();
+      this._username = _username;
+      this._newValue = _newValue;
+      set_newValueIsSet(true);
+    }
+
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public put_args(put_args other) {
+      __isset_bitfield = other.__isset_bitfield;
+      if (other.isSet_username()) {
+        this._username = other._username;
+      }
+      this._newValue = other._newValue;
     }
 
     public put_args deepCopy() {
@@ -591,15 +631,87 @@ public class APIs {
 
     @Override
     public void clear() {
+      this._username = null;
+      set_newValueIsSet(false);
+      this._newValue = 0;
+    }
+
+    public String get_username() {
+      return this._username;
+    }
+
+    public put_args set_username(String _username) {
+      this._username = _username;
+      return this;
+    }
+
+    public void unset_username() {
+      this._username = null;
+    }
+
+    /** Returns true if field _username is set (has been assigned a value) and false otherwise */
+    public boolean isSet_username() {
+      return this._username != null;
+    }
+
+    public void set_usernameIsSet(boolean value) {
+      if (!value) {
+        this._username = null;
+      }
+    }
+
+    public int get_newValue() {
+      return this._newValue;
+    }
+
+    public put_args set_newValue(int _newValue) {
+      this._newValue = _newValue;
+      set_newValueIsSet(true);
+      return this;
+    }
+
+    public void unset_newValue() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, ___NEWVALUE_ISSET_ID);
+    }
+
+    /** Returns true if field _newValue is set (has been assigned a value) and false otherwise */
+    public boolean isSet_newValue() {
+      return EncodingUtils.testBit(__isset_bitfield, ___NEWVALUE_ISSET_ID);
+    }
+
+    public void set_newValueIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, ___NEWVALUE_ISSET_ID, value);
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
+      case _USERNAME:
+        if (value == null) {
+          unset_username();
+        } else {
+          set_username((String)value);
+        }
+        break;
+
+      case _NEW_VALUE:
+        if (value == null) {
+          unset_newValue();
+        } else {
+          set_newValue((Integer)value);
+        }
+        break;
+
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
+      case _USERNAME:
+        return get_username();
+
+      case _NEW_VALUE:
+        return Integer.valueOf(get_newValue());
+
       }
       throw new IllegalStateException();
     }
@@ -611,6 +723,10 @@ public class APIs {
       }
 
       switch (field) {
+      case _USERNAME:
+        return isSet_username();
+      case _NEW_VALUE:
+        return isSet_newValue();
       }
       throw new IllegalStateException();
     }
@@ -628,12 +744,40 @@ public class APIs {
       if (that == null)
         return false;
 
+      boolean this_present__username = true && this.isSet_username();
+      boolean that_present__username = true && that.isSet_username();
+      if (this_present__username || that_present__username) {
+        if (!(this_present__username && that_present__username))
+          return false;
+        if (!this._username.equals(that._username))
+          return false;
+      }
+
+      boolean this_present__newValue = true;
+      boolean that_present__newValue = true;
+      if (this_present__newValue || that_present__newValue) {
+        if (!(this_present__newValue && that_present__newValue))
+          return false;
+        if (this._newValue != that._newValue)
+          return false;
+      }
+
       return true;
     }
 
     @Override
     public int hashCode() {
       List<Object> list = new ArrayList<Object>();
+
+      boolean present__username = true && (isSet_username());
+      list.add(present__username);
+      if (present__username)
+        list.add(_username);
+
+      boolean present__newValue = true;
+      list.add(present__newValue);
+      if (present__newValue)
+        list.add(_newValue);
 
       return list.hashCode();
     }
@@ -646,6 +790,26 @@ public class APIs {
 
       int lastComparison = 0;
 
+      lastComparison = Boolean.valueOf(isSet_username()).compareTo(other.isSet_username());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSet_username()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this._username, other._username);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSet_newValue()).compareTo(other.isSet_newValue());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSet_newValue()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this._newValue, other._newValue);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
       return 0;
     }
 
@@ -666,6 +830,17 @@ public class APIs {
       StringBuilder sb = new StringBuilder("put_args(");
       boolean first = true;
 
+      sb.append("_username:");
+      if (this._username == null) {
+        sb.append("null");
+      } else {
+        sb.append(this._username);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("_newValue:");
+      sb.append(this._newValue);
+      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -685,6 +860,8 @@ public class APIs {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -709,6 +886,22 @@ public class APIs {
             break;
           }
           switch (schemeField.id) {
+            case 1: // _USERNAME
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct._username = iprot.readString();
+                struct.set_usernameIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // _NEW_VALUE
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct._newValue = iprot.readI32();
+                struct.set_newValueIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -724,6 +917,14 @@ public class APIs {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
+        if (struct._username != null) {
+          oprot.writeFieldBegin(_USERNAME_FIELD_DESC);
+          oprot.writeString(struct._username);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldBegin(_NEW_VALUE_FIELD_DESC);
+        oprot.writeI32(struct._newValue);
+        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -741,11 +942,34 @@ public class APIs {
       @Override
       public void write(org.apache.thrift.protocol.TProtocol prot, put_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSet_username()) {
+          optionals.set(0);
+        }
+        if (struct.isSet_newValue()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSet_username()) {
+          oprot.writeString(struct._username);
+        }
+        if (struct.isSet_newValue()) {
+          oprot.writeI32(struct._newValue);
+        }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, put_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct._username = iprot.readString();
+          struct.set_usernameIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct._newValue = iprot.readI32();
+          struct.set_newValueIsSet(true);
+        }
       }
     }
 

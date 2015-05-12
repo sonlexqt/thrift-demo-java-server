@@ -15,7 +15,7 @@ import thriftDemo.*;
 public class APIsHandler implements APIs.Iface {
 
     @Override
-    public void put() throws TException {
+    public void put(String _username, int _newValue) throws TException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -28,5 +28,5 @@ public class APIsHandler implements APIs.Iface {
     public int get(String _username) throws TException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }
