@@ -16,20 +16,15 @@ import thriftDemo.*;
  */
 public class APIsHandler implements APIs.Iface {
     ServerManager serverManager = new ServerManager(0, new HashMap<String, Integer>());
-    long startTime, stopTime;
-    int numberOfRequest = 0;
     
     @Override
     public void put(String _username, int _newValue) throws TException {
         Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();
         userAccessCounter.put(_username, +_newValue);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void increase(String _username) throws TException {
-        numberOfRequest++;
-                
         serverManager.setTotalAccessCounter(serverManager.getTotalAccessCounter() + 1);
         Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();
         if (userAccessCounter.containsKey(_username)){
@@ -43,30 +38,16 @@ public class APIsHandler implements APIs.Iface {
         System.out.println("===================");
         System.out.println("username: " + _username);
         System.out.println("counter: " + userAccessCounter.get(_username));
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public int get(String _username) throws TException {
-        Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();
-        return userAccessCounter.get(_username);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();     
+        if (userAccessCounter!=null && userAccessCounter.containsKey(_username)){
+            return userAccessCounter.get(_username);
+        }
+        else {
+            return 0;
+        }        
     }
-
-    @Override
-    public void finishBenchmark() throws TException {
-        stopTime = System.currentTimeMillis();
-        System.out.println("> stopTime: " + stopTime);
-        long elapsedTime = stopTime - startTime;
-        System.out.println("> elapsedTime: " + elapsedTime);
-        System.out.println("Requests per second: " + (numberOfRequest/elapsedTime));
-    }
-
-    @Override
-    public void startBenchmark() throws TException {
-        numberOfRequest = 0;
-        startTime = System.currentTimeMillis();
-        System.out.println("> startTime: " + startTime);
-    }
-
 }
