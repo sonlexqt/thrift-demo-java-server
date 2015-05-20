@@ -1,6 +1,8 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.thrift.TException;
 import thriftDemo.*;
 
@@ -42,6 +44,9 @@ public class APIsHandler implements APIs.Iface {
 
     @Override
     public int get(String _username) throws TException {
+        for (long i = 0; i < 3000000; i++){
+            // simulate database
+        }
         Map<String,Integer> userAccessCounter = serverManager.getUserAccessCounter();     
         if (userAccessCounter!=null && userAccessCounter.containsKey(_username)){
             return userAccessCounter.get(_username);

@@ -8,10 +8,15 @@
  *
  * @author sonle
  */
+import org.apache.thrift.server.THsHaServer;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.server.TThreadedSelectorServer;
+import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
@@ -48,20 +53,6 @@ public class JavaServer {
         }
     }
 
-    public static void simple(APIs.Processor processor) {
-        try {
-            TServerTransport serverTransport = new TServerSocket(9090);
-            TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
-
-            // Use this for a multithreaded server
-            // TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
-            System.out.println("Starting the simple server...");
-            server.serve();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void secure(APIs.Processor processor) {
         try {
             /*
@@ -92,4 +83,36 @@ public class JavaServer {
             e.printStackTrace();
         }
     }
+
+    public static void simple(APIs.Processor processor) {
+        try 
+        {
+//            // use the TSimpleServer
+//            TServerTransport serverTransport = new TServerSocket(9090);
+//            TServer server = new TSimpleServer(new Args(serverTransport).processor(processor));
+
+//            // use the TNonBlockingServer
+//            TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(9090);
+//            TServer server = new TNonblockingServer(new TNonblockingServer.Args(serverTransport).processor(processor));
+            
+//            // use the THsHaServer
+//            TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(9090);
+//            TServer server = new THsHaServer(new THsHaServer.Args(serverTransport).processor(processor));
+            
+//            // use the TThreadPoolServer
+//            TServerTransport serverTransport = new TServerSocket(9090);
+//            TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).processor(processor));
+
+            // use the TThreadedSelectorServer
+            TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(9090);
+            TServer server = new TThreadedSelectorServer(new TThreadedSelectorServer.Args(serverTransport).processor(processor));
+            
+            System.out.println("Starting the server...");
+            server.serve();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
