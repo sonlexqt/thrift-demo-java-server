@@ -55,4 +55,9 @@ public class APIsHandler implements APIs.Iface {
             return 0;
         }        
     }
+
+    @Override
+    public boolean ping() throws TException {
+        return true;
+    }
 }
