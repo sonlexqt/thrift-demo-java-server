@@ -13,8 +13,8 @@ struct ServerManager {
 }
 
 service APIs {
-	void put(1: string _username, 2: i32 _newValue),
-	void increase(1: string _username),
+	bool put(1: string _username, 2: i32 _newValue),
+	bool increase(1: string _username),
 	i32 get(1: string _username),
 	bool ping()
 }
